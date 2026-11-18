@@ -47,7 +47,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-neutral-900 bg-black/90 sticky top-0 z-20 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2 text-electric font-extrabold tracking-tight"><Spade size={20} /><span>LAB STUDIO</span><span className="text-[10px] text-neutral-500 font-mono">v4.0.1</span></div>
+          <div className="flex items-center gap-2 text-electric font-extrabold tracking-tight"><Spade size={20} /><span>LAB STUDIO</span><span className="text-[10px] text-neutral-500 font-mono">v4.1.0</span></div>
           <nav className="flex gap-1 flex-wrap">
             {PILLARS.map((p) => { const Icon = ICONS[p.id]; const active = pillar === p.id; return (
               <button key={p.id} onClick={() => setPillar(p.id)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors border ${active ? 'border-electric text-electric bg-electric/10' : 'border-transparent text-neutral-400 hover:text-white hover:border-neutral-800'}`}>
@@ -75,7 +75,7 @@ export default function App() {
           {pillar === 'mathdocs' && <MathDocsView {...vp} />}
         </Suspense>
       </main>
-      <footer className="border-t border-neutral-900 py-3 text-center text-[11px] text-neutral-600 font-mono">Lab Studio v4.0.1 · God of Poker · NLHE 6-Max · GTO / Explotativo</footer>
+      <footer className="border-t border-neutral-900 py-3 text-center text-[11px] text-neutral-600 font-mono">Lab Studio v4.1.0 · God of Poker · NLHE 6-Max · GTO / Explotativo</footer>
     </div>
   );
 }
