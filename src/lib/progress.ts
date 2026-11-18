@@ -24,8 +24,9 @@ export function recordDecision(uid: string, rec: Omit<HandRecord, 'id' | 'ts'>):
       card = { id: key, category: rec.category, street: rec.street, hero: rec.hero, board: rec.board, prompt, correctAction: rec.best, chosen: rec.action, sm2: newSm2Card(), dueAt: Date.now(), createdAt: Date.now() };
       s.errors.push(card);
     } else { card.prompt = prompt; card.chosen = rec.action; }
-    card.sm2 = sm2(card.sm2, 1);
-    card.dueAt = Date.now() + card.sm2.dueInDays * 86400000;
+    const r1 = sm2(card.sm2, 1);
+    card.sm2 = r1;
+    card.dueAt = Date.now() + r1.dueInDays * 86400000;
     cardId = key;
   }
   save(uid, s);
@@ -51,8 +52,9 @@ export function reviewErrorCard(uid: string, id: string, quality: number): Error
   const s = load(uid);
   const card = s.errors.find((c) => c.id === id);
   if (!card) return undefined;
-  card.sm2 = sm2(card.sm2, quality);
-  card.dueAt = Date.now() + card.sm2.dueInDays * 86400000;
+  const rq = sm2(card.sm2, quality);
+  card.sm2 = rq;
+  card.dueAt = Date.now() + rq.dueInDays * 86400000;
   save(uid, s);
   return card;
 }
