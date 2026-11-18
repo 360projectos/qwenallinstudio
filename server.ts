@@ -34,7 +34,7 @@ async function verifyFirebase(token: string): Promise<Claims | null> {
     const keys = await getJwks();
     const jwk = keys.find((k) => k['kid'] === header.kid);
     if (!jwk) return null;
-    const key = createPublicKey({ key: jwk as JsonWebKey, format: 'jwk' });
+    const key = createPublicKey({ key: jwk, format: 'jwk' } as Parameters<typeof createPublicKey>[0]);
     const ok = cryptoVerify('RSA-SHA256', Buffer.from(`${h}.${p}`), key, b64url(s));
     if (!ok) return null;
     const c = JSON.parse(b64url(p).toString()) as Claims;
@@ -98,7 +98,7 @@ app.post('/api/gemini/roadmap', requireAuth, async (req: AuthedRequest, res) => 
 });
 app.get('/api/admin/kpis', requireAdmin, async (_req, res) => { res.json(await repo.kpis()); });
 app.get('/api/admin/users', requireAdmin, async (_req, res) => { res.json(await repo.listUsers()); });
-app.post('/api/admin/users/:uid/plan', requireAdmin, async (req, res) => { res.json(await repo.setPlan(req.params.uid, String(req.body?.plan ?? 'free'))); });
+app.post('/api/admin/users/:uid/plan', requireAdmin, async (req, res) => { res.json(await repo.setPlan(String(req.params.uid), String(req.body?.plan ?? 'free'))); });
 app.post('/api/admin/invites', requireAdmin, async (req, res) => { res.status(201).json(await repo.createInvite(String(req.body?.email ?? ''), String(req.body?.plan ?? 'pro'))); });
 app.post('/api/admin/announcements', requireAdmin, async (req, res) => { res.status(201).json(await repo.createAnnouncement(String(req.body?.title ?? ''), String(req.body?.body ?? ''))); });
 app.get('/api/admin/tickets', requireAdmin, async (_req, res) => { res.json(await repo.listTickets()); });
