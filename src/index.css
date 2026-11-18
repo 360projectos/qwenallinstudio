@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-electric: #3B82F6;
+}
+html, body, #root { height: 100%; background: #000000; }
+body { font-family: var(--font-sans); color: #e5e5e5; -webkit-font-smoothing: antialiased; }
+.tabular { font-variant-numeric: tabular-nums; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
