@@ -471,7 +471,7 @@ export const WIZARD_HANDS: WizardHand[] = [
  {
   "id": "w14",
   "name": "Two pair jack-ten",
-  "hero": "AjTj",
+  "hero": "JsTs",
   "heroPos": "MP",
   "villainPos": "BB",
   "archetype": "tag",
