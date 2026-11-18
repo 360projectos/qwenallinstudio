@@ -22,7 +22,7 @@ const spot = (hero: string, board: string, facingBet: boolean, street: WizardSpo
   street, hero: parseCards(hero) as [number, number], board: board ? parseCards(board) : [], potBB: 6.5, effStackBB: 97, heroIP: true, villainRange: VR, facingBet, callCostBB: 2.5,
 });
 test('wizard: frecuencias del Action Gauge suman 1', () => {
-  for (const s of [spot('AhAs', '', true, 'preflop'), spot('9d9c', '9h Kd 4c', false, 'flop'), spot('AhKh', 'Kh 7d 2c 9s', true, 'turn')]) {
+  for (const s of [spot('AhAs', '', true, 'preflop'), spot('9d9c', '9h Kd 4c', false, 'flop'), spot('AhKh', 'Ks 7d 2c 9s', true, 'turn')]) {
     const d = decideWizard(s, 3);
     const sum = d.actions.reduce((a, x) => a + x.freq, 0);
     assert.ok(Math.abs(sum - 1) < 1e-6, `suma ${sum}`);
@@ -40,7 +40,7 @@ test('datos: 32 escenarios y 16 manos wizard sin colisiones de cartas', () => {
   assert.equal(SCENARIOS.length, 32);
   assert.equal(WIZARD_HANDS.length, 16);
   for (const h of WIZARD_HANDS) {
-    const all = [...h.hero.match(/../g)!, ...h.river.match(/../g)!];
+    const all = [...parseCards(h.hero), ...parseCards(h.river)];
     assert.equal(new Set(all).size, 7, `colision en ${h.id}`);
   }
 });

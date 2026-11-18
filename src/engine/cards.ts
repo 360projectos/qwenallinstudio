@@ -10,7 +10,15 @@ export function parseCard(s: string): Card {
   if (r < 0 || su < 0 || s.length !== 2) throw new Error(`Carta invalida: ${s}`);
   return r * 4 + su;
 }
-export function parseCards(s: string): Card[] { return s.split(/[\s,]+/).filter(Boolean).map(parseCard); }
+export function parseCards(s: string): Card[] {
+  const out: Card[] = [];
+  for (const t of s.split(/[\s,]+/).filter(Boolean)) {
+    if (t.length === 2) out.push(parseCard(t));
+    else if (t.length > 2 && t.length % 2 === 0) { for (let i = 0; i < t.length; i += 2) out.push(parseCard(t.slice(i, i + 2))); }
+    else throw new Error(`Carta invalida: ${t}`);
+  }
+  return out;
+}
 export const FULL_DECK: Card[] = Array.from({ length: 52 }, (_, i) => i);
 export function availableDeck(dead: Iterable<Card>): Card[] { const d = new Set(dead); return FULL_DECK.filter((c) => !d.has(c)); }
 export const CATEGORY_NAMES = ['Carta alta','Pareja','Doble pareja','Trio','Escalera','Color','Full house','Poker','Escalera de color'] as const;
