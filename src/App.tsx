@@ -4,7 +4,7 @@ import { PILLARS, type Plan, type Level } from './lib/plans.ts';
 import { DEMO_SESSION, isDemo, isAdminEmail, loginGoogle, resolveRedirect, type Session } from './lib/firebase.ts';
 import { loadProfile, saveProfile } from './lib/userStorage.ts';
 import type { ViewProps } from './lib/types.ts';
-const SolverView = lazy(() => import('./views/SolverView.tsx'));
+const AssistantView = lazy(() => import('./views/AssistantView.tsx'));
 const TrainerMode = lazy(() => import('./views/TrainerMode.tsx'));
 const RangeEquityCalculator = lazy(() => import('./views/RangeEquityCalculator.tsx'));
 const ToolsView = lazy(() => import('./views/ToolsView.tsx'));
@@ -67,7 +67,7 @@ export default function App() {
       </header>
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
         <Suspense fallback={<div className="text-neutral-500 text-sm animate-pulse">Cargando modulo…</div>}>
-          {pillar === 'solver' && <SolverView {...vp} />}
+          {pillar === 'solver' && <AssistantView {...vp} />}
           {pillar === 'trainer' && <TrainerMode {...vp} />}
           {pillar === 'ranges' && <RangeEquityCalculator {...vp} />}
           {pillar === 'tools' && <ToolsView {...vp} />}
