@@ -1,0 +1,38 @@
+name: CI - 4 Gates (Regla de Oro)
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+      - name: Gate 1 - tsc --noEmit
+        run: npx tsc --noEmit
+      - name: Gate 2 - vite build
+        run: npx vite build
+      - name: Gate 3 - pruebas matematicas
+        run: npm test
+      - name: Gate 4 - HTTP 200 / 401
+        run: |
+          NODE_ENV=production PORT=8090 LAB_DEV_SECRET=devsecret node server.ts &
+          SRV=$!
+          sleep 3
+          fail=0
+          for p in / /admin /api/health; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8090$p")
+            echo "GET $p -> $code"
+            [ "$code" = "200" ] || fail=1
+          done
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "http://127.0.0.1:8090/api/gemini/roadmap")
+          echo "POST roadmap sin token -> $code (esperado 401)"
+          [ "$code" = "401" ] || fail=1
+          kill $SRV 2>/dev/null || true
+          exit $fail
